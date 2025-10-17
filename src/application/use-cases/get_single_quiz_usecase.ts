@@ -1,10 +1,10 @@
 import { Quiz } from "@/src/entities/models/quiz";
-import { QuizRepository } from "../repositories/quiz.repository.interface";
+import { IQuizRepository } from "../repositories/quiz.repository.interface";
 
 
 export const getSingleQuizUseCase = async (
   quizId: string,
-  quizRepository: QuizRepository
+  quizRepository: IQuizRepository
 ): Promise<Quiz> => {
   if (!quizId) {
     throw new Error("Quiz ID is required");
