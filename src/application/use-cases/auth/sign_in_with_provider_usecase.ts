@@ -1,8 +1,13 @@
 import { IAuthRepository } from "@/src/application/repositories/auth.repository.interface";
 
-export const signInWithProviderUseCase = async (
-  provider: 'google' | 'github' | 'facebook',
-  authRepository: IAuthRepository
-): Promise<void> => {
-  return authRepository.signInWithProvider(provider);
-};
+interface SignInWithProviderInput {
+  provider: "google" | "github" | "facebook";
+}
+
+export class SignInWithProviderUseCase {
+  constructor(private readonly authRepository: IAuthRepository) {}
+
+  async execute(input: SignInWithProviderInput): Promise<void> {
+    return this.authRepository.signInWithProvider(input.provider);
+  }
+}

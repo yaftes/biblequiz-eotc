@@ -28,7 +28,5 @@ export class Quiz {
   }
 
   
-  markAnswered() {
-    this.isAnswered = true;
-  }
+
 }

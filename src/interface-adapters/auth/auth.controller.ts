@@ -1,9 +1,18 @@
-
-import { IAuthRepository } from "@/src/application/repositories/auth.repository.interface";
+import { GetCurrentUserUseCase } from "@/src/application/use-cases/auth/get_current_user_usecase";
+import { SignInWithEmailUseCase } from "@/src/application/use-cases/auth/sign_in_with_email_usecase";
+import { SignInWithProviderUseCase } from "@/src/application/use-cases/auth/sign_in_with_provider_usecase";
+import { SignOutUseCase } from "@/src/application/use-cases/auth/sign_out_usecase";
+import { SignUpWithEmailUseCase } from "@/src/application/use-cases/auth/sign_up_with_email_usecase";
 import { User } from "@/src/entities/models/user";
 
 export class AuthController {
-  constructor(private authRepo: IAuthRepository) {}
+  constructor(
+    private readonly signUpWithEmailUseCase: SignUpWithEmailUseCase,
+    private readonly signInWithEmailUseCase: SignInWithEmailUseCase,
+    private readonly signInWithProviderUseCase: SignInWithProviderUseCase,
+    private readonly signOutUseCase: SignOutUseCase,
+    private readonly getCurrentUserUseCase: GetCurrentUserUseCase
+  ) {}
 
   private validateEmail(email: string): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,25 +37,25 @@ export class AuthController {
   async signUpWithEmail(email: string, password: string): Promise<User> {
     this.validateEmail(email);
     this.validatePassword(password);
-    return await this.authRepo.signUpWithEmail(email, password);
+    return await this.signUpWithEmailUseCase.execute({ email, password });
   }
 
   async signInWithEmail(email: string, password: string): Promise<User> {
     this.validateEmail(email);
     this.validatePassword(password);
-    return await this.authRepo.signInWithEmail(email, password);
+    return await this.signInWithEmailUseCase.execute({ email, password });
   }
 
   async signInWithProvider(provider: "google" | "github" | "facebook"): Promise<void> {
     this.validateProvider(provider);
-    return await this.authRepo.signInWithProvider(provider);
+    return await this.signInWithProviderUseCase.execute({ provider });
   }
 
   async signOut(): Promise<void> {
-    return await this.authRepo.signOut();
+    return await this.signOutUseCase.execute();
   }
 
   async getCurrentUser(): Promise<User | null> {
-    return await this.authRepo.getCurrentUser();
+    return await this.getCurrentUserUseCase.execute();
   }
 }
