@@ -1,16 +1,24 @@
-
-export class UnauthenticatedError extends Error {
-  constructor(message: string = 'User is not authenticated') {
+export class AuthError extends Error {
+  constructor(message: string) {
     super(message);
-    this.name = 'UnauthenticatedError';
-    if (Error.captureStackTrace) Error.captureStackTrace(this, UnauthenticatedError);
+    this.name = 'AuthError';
   }
 }
 
-export class UnauthorizedError extends Error {
-  constructor(message: string = 'User is not authorized') {
-    super(message);
-    this.name = 'UnauthorizedError';
-    if (Error.captureStackTrace) Error.captureStackTrace(this, UnauthorizedError);
+export class InvalidCredentialsError extends AuthError {
+  constructor() {
+    super('Invalid email or password');
+  }
+}
+
+export class ProviderAuthError extends AuthError {
+  constructor(provider: string) {
+    super(`Failed to sign in with ${provider}`);
+  }
+}
+
+export class UnauthenticatedError extends AuthError {
+  constructor() {
+    super('User is not authenticated');
   }
 }
