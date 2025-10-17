@@ -1,9 +1,11 @@
 export class Quiz {
+    
   id: string;
   question: string;
   answer: string;
   choices: string[];
   isAnswered: boolean;
+  category : string;
   hint?: string; 
 
   constructor(
@@ -12,6 +14,7 @@ export class Quiz {
     answer: string,
     choices: string[],
     isAnswered: boolean = false,
+    category : string,
     hint?: string
   ) {
     this.id = id;
@@ -20,16 +23,8 @@ export class Quiz {
     this.choices = choices;
     this.isAnswered = isAnswered;
     this.hint = hint;
+    this.category = category;
 
-    this.validate();
-  }
-
-  
-  private validate() {
-    if (!this.question) throw new Error("Quiz must have a question");
-    if (!this.answer) throw new Error("Quiz must have an answer");
-    if (!this.choices || this.choices.length < 2) throw new Error("Quiz must have at least 2 choices");
-    if (!this.choices.includes(this.answer)) throw new Error("Answer must be one of the choices");
   }
 
   
