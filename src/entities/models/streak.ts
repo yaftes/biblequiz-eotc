@@ -37,7 +37,6 @@ export class Streak {
     this.lastUpdated = new Date();
   }
 
-  
   reset() {
     this.currentCount = 0;
     this.lastUpdated = new Date();
