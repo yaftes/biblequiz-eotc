@@ -6,6 +6,7 @@ import { SignUpWithEmailUseCase } from "@/src/application/use-cases/auth/sign_up
 import { User } from "@/src/entities/models/user";
 
 export class AuthController {
+
   constructor(
     private readonly signUpWithEmailUseCase: SignUpWithEmailUseCase,
     private readonly signInWithEmailUseCase: SignInWithEmailUseCase,
@@ -34,10 +35,10 @@ export class AuthController {
     }
   }
 
-  async signUpWithEmail(email: string, password: string): Promise<User> {
+  async signUpWithEmail(name : string,email: string, password: string): Promise<User> {
     this.validateEmail(email);
     this.validatePassword(password);
-    return await this.signUpWithEmailUseCase.execute({ email, password });
+    return await this.signUpWithEmailUseCase.execute({name, email, password });
   }
 
   async signInWithEmail(email: string, password: string): Promise<User> {

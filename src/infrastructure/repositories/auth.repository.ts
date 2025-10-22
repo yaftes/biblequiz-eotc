@@ -7,11 +7,24 @@ export class AuthRepository implements IAuthRepository {
     
   constructor(private readonly supabase: SupabaseClient) {}
 
-  async signUpWithEmail(email: string, password: string): Promise<User> {
-    const { data, error } = await this.supabase.auth.signUp({ email, password });
-    if (error || !data.user) throw new InvalidCredentialsError();
-    return new User(data.user.id, data.user.email ?? '');
-  }
+ async signUpWithEmail(name: string, email: string, password: string): Promise<User> {
+  const { data, error } = await this.supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { name } 
+    }
+  });
+
+  if (error || !data.user) throw new InvalidCredentialsError();
+
+  return new User(
+    data.user.id,
+    data.user.email ?? '',
+    data.user.user_metadata?.name ?? name 
+  );
+}
+
 
   async signInWithEmail(email: string, password: string): Promise<User> {
     const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
