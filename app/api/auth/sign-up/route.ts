@@ -1,9 +1,22 @@
 import { authController } from "@/di/container";
-
+import { AuthError } from "@/src/entities/errors/auth";
 
 export async function POST(req: Request) {
-  const {name, email, password } = await req.json();
+  try {
+    const { name, email, password } = await req.json();
+    const user = await authController.signUpWithEmail(name, email, password);
+    return new Response(JSON.stringify(user), { status: 200 });
+  } catch (error: any) {
+    let status = 500;
+    let message = "Internal Server Error";
 
-  const user = await authController.signUpWithEmail(name,email, password);
-  return Response.json(user);
+    if (error instanceof AuthError) {
+      status = 400;
+      message = error.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+
+    return new Response(JSON.stringify({ error: message }), { status });
+  }
 }

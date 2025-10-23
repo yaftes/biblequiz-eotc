@@ -6,4 +6,5 @@ export interface IAuthRepository {
   signInWithProvider(provider: 'google' | 'github' | 'facebook'): Promise<void>;
   signOut(): Promise<void>;
   getCurrentUser(): Promise<User | null>;
+  reCalculateRank() : Promise<void>;
 }

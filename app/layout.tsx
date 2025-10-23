@@ -1,9 +1,11 @@
+import '../styles/globals.css'
 
 
 export const metadata = {
   title: "My Next.js App",
   description: "Example project",
 };
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
